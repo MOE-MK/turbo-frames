@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Turbo FPV Frames</title>
+<meta name="description" content="Open-source carbon fiber FPV frames: the 3.5-inch Turbo35 and the 2-inch Turbo20. Explore them in 3D and download the DXFs.">
+<meta property="og:title" content="Turbo FPV Frames">
+<meta property="og:description" content="Open-source T700 carbon FPV frames. Explore the Turbo35 and Turbo20 in 3D, then download the DXFs and build your own.">
+<meta property="og:image" content="https://moe-mk.github.io/turbo-frames/img/og.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#e6e8eb" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0e1013" media="(prefers-color-scheme: dark)">
+<link rel="preload" href="fonts/archivo.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2314161a'/%3E%3Cpath d='M7 8h18l-3 5H19v11h-6V13H10z' fill='%236f8bff'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/site.css">
+<script type="importmap">
+{ "imports": {
+  "three": "./vendor/three/three.module.min.js",
+  "three/addons/": "./vendor/three/addons/"
+} }
+</script>
+</head>
+<body>
+<a class="skip" href="#specs">Skip to specs</a>
+
+<header class="bar">
+  <a class="wordmark" href="#top" aria-label="Turbo frames, back to top">TURBO<span>/frames</span></a>
+  <nav class="bar__nav" aria-label="Sections">
+    <a href="#frames">Frames</a>
+    <a href="#specs">Specs</a>
+    <a href="#blueprint">Blueprint</a>
+    <a href="#build">Build</a>
+    <a href="#download">Download</a>
+  </nav>
+  <a class="btn btn--ghost btn--sm" href="https://github.com/MOE-MK/turbo-frames" target="_blank" rel="noopener">
+    <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+    GitHub
+  </a>
+</header>
+
+<main id="top">
+  <!-- 3D stage: sticky canvas, chapters scroll over it -->
+  <section class="stage" id="frames" aria-label="Turbo frames in 3D">
+    <div class="stage__sticky">
+      <canvas id="gl" aria-label="Interactive 3D model of the frame. Drag to rotate." role="img"></canvas>
+      <div class="pins" id="pins" aria-hidden="true"></div>
+      <img class="stage__fallback" src="img/hero.png" alt="Turbo35 and Turbo20 bottom plates" hidden>
+      <div class="stage__hud" aria-hidden="true">
+        <span id="hud-model">TURBO35</span>
+        <span id="hud-view">VIEW 01 / ISO</span>
+        <span class="hud__drag">Drag to rotate</span>
+      </div>
+    </div>
+
+    <div class="chapters">
+      <article class="chapter chapter--hero" data-chapter="hero">
+        <div class="card card--bare">
+          <p class="eyebrow">Open-source carbon FPV frames</p>
+          <h1 class="mega">TURBO<em>35</em></h1>
+          <p class="lede">A 3.5-inch frame for freestyle and cinematic flying, cut from T700 carbon. Built for durability, with no props in view. Download it and build it yourself.</p>
+          <div class="actions">
+            <a class="btn btn--solid" href="#download">Download DXFs</a>
+            <a class="btn btn--ghost" href="https://github.com/MOE-MK/turbo-frames" target="_blank" rel="noopener">View on GitHub</a>
+          </div>
+          <dl class="strip">
+            <div><dt>Class</dt><dd>3.5″</dd></div>
+            <div><dt>Wheelbase</dt><dd>160 mm</dd></div>
+            <div><dt>Frame</dt><dd>75 g</dd></div>
+            <div><dt>Bottom</dt><dd>5 mm</dd></div>
+          </dl>
+        </div>
+      </article>
+
+      <article class="chapter" data-chapter="unibody">
+        <div class="card">
+          <p class="eyebrow"><span class="tag">T35</span> Plates</p>
+          <h2>5 mm unibody bottom.</h2>
+          <p>The bottom plate is one continuous 5 mm piece of T700 carbon, paired with a 3 mm top plate. The shape is rounded everywhere, with no sharp angles, to lower the chance of a break in hard landings and crashes.</p>
+        </div>
+      </article>
+
+      <article class="chapter" data-chapter="stack">
+        <div class="card">
+          <p class="eyebrow"><span class="tag">T35</span> Electronics</p>
+          <h2>Stack it your way.</h2>
+          <p>Mount a 25×25 AIO, a 20×20 stack or a 30×30 stack. There's room for the video transmitter too, including the DJI O3.</p>
+          <div class="seg" role="group" aria-label="Highlight a mounting pattern">
+            <button type="button" id="stack-all" class="is-on" data-stack="all">All</button>
+            <button type="button" id="stack-20" data-stack="s20">20×20</button>
+            <button type="button" id="stack-25" data-stack="s25">25×25 AIO</button>
+            <button type="button" id="stack-30" data-stack="s30">30×30</button>
+          </div>
+          <p class="note" id="stack-note">Every mounting pattern on the bottom plate, lit.</p>
+        </div>
+      </article>
+
+      <article class="chapter" data-chapter="motors">
+        <div class="card">
+          <p class="eyebrow"><span class="tag">T35</span> Power</p>
+          <h2>9×9 or 12×12 motors.</h2>
+          <p>Slotted motor mounts take both bolt patterns. The frame is designed around 16xx–18xx motors at 3000–4000 KV, on a 4S 850–1000 mAh LiPo.</p>
+          <p class="note">The blue rings mark the 9 mm and 12 mm bolt circles each slot covers.</p>
+        </div>
+      </article>
+
+      <article class="chapter" data-chapter="antenna">
+        <div class="card">
+          <p class="eyebrow"><span class="tag">T35</span> Radio</p>
+          <h2>Antenna slot, built in.</h2>
+          <p>A slot at the back of the top plate locks a whip antenna in place, so you don't need a 3D-printed mount for it. Tested and proven.</p>
+        </div>
+      </article>
+
+      <article class="chapter" data-chapter="assembled">
+        <div class="card">
+          <p class="eyebrow"><span class="tag">T35</span> Assembled</p>
+          <h2>No props in view.</h2>
+          <p>The props stay out of the camera's view for a clean, uninterrupted feed. Ten M2 × 25 mm standoffs hold the plates together. M2 is on purpose, so the standoffs can absorb hits.</p>
+          <dl class="strip">
+            <div><dt>Frame</dt><dd>75 g</dd></div>
+            <div><dt>With hardware</dt><dd>85 g</dd></div>
+          </dl>
+        </div>
+      </article>
+
+      <article class="chapter chapter--t20" data-chapter="t20">
+        <div class="card card--bare">
+          <p class="eyebrow">The 2-inch sibling</p>
+          <h2 class="mega mega--sm">TURBO<em>20</em></h2>
+          <p class="lede">Built around one 25×25 AIO. Any 25×25 VTX stacks right on top of it, including the DJI O4 and O4 Pro.</p>
+          <dl class="strip">
+            <div><dt>Class</dt><dd>2″</dd></div>
+            <div><dt>Wheelbase</dt><dd>94 mm</dd></div>
+            <div><dt>Bottom</dt><dd>3 mm</dd></div>
+            <div><dt>Top</dt><dd>2 mm</dd></div>
+          </dl>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- Specs -->
+  <section class="section" id="specs" aria-labelledby="specs-h">
+    <header class="section__head">
+      <p class="eyebrow">Specifications</p>
+      <h2 id="specs-h" class="display">Two frames, one material.</h2>
+    </header>
+    <div class="table-wrap">
+      <table class="specs">
+        <thead><tr><th scope="col"><span class="sr">Spec</span></th><th scope="col">Turbo35</th><th scope="col">Turbo20</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Prop size</th><td>3.5″</td><td>2″</td></tr>
+          <tr><th scope="row">Wheelbase</th><td>160 mm</td><td>94 mm</td></tr>
+          <tr><th scope="row">Material</th><td>T700 carbon fiber</td><td>T700 carbon fiber</td></tr>
+          <tr><th scope="row">Bottom plate</th><td>5.0 mm unibody</td><td>3.0 mm</td></tr>
+          <tr><th scope="row">Top plate</th><td>3.0 mm</td><td>2.0 mm</td></tr>
+          <tr><th scope="row">Electronics</th><td>25×25 AIO, 20×20 or 30×30 stack</td><td>25×25 AIO, VTX stacked on top</td></tr>
+          <tr><th scope="row">Video</th><td>Room for the DJI O3 and other VTXs</td><td>Any 25×25 VTX, including DJI O4 and O4 Pro</td></tr>
+          <tr><th scope="row">Motor mount</th><td>9×9 or 12×12, slotted</td><td>9×9</td></tr>
+          <tr><th scope="row">Motors</th><td>16xx–18xx, 3000–4000 KV</td><td class="tbd">Not listed yet</td></tr>
+          <tr><th scope="row">Battery</th><td>4S 850–1000 mAh LiPo</td><td class="tbd">Not listed yet</td></tr>
+          <tr><th scope="row">Standoffs</th><td>10 × M2, 25 mm</td><td>M2</td></tr>
+          <tr><th scope="row">Weight</th><td>75 g frame, 85 g with hardware</td><td class="tbd">Not listed yet</td></tr>
+          <tr><th scope="row">Antenna</th><td>Built-in whip antenna slot</td><td class="tbd">None</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Blueprint -->
+  <section class="section section--sheet" id="blueprint" aria-labelledby="bp-h">
+    <header class="section__head">
+      <p class="eyebrow">Blueprint</p>
+      <h2 id="bp-h" class="display">Every hole, to the hundredth.</h2>
+      <p class="section__lede">Drawn straight from the DXF files. Hover a hole for its size and position. Dimensions in millimeters.</p>
+    </header>
+    <div class="bp">
+      <div class="bp__controls">
+        <div class="seg" role="tablist" aria-label="Frame">
+          <button type="button" role="tab" id="bp-f35" class="is-on" aria-selected="true" data-frame="t35">Turbo35</button>
+          <button type="button" role="tab" id="bp-f20" aria-selected="false" data-frame="t20">Turbo20</button>
+        </div>
+        <div class="seg" role="tablist" aria-label="Plate">
+          <button type="button" role="tab" id="bp-bottom" class="is-on" aria-selected="true" data-plate="bottom">Bottom</button>
+          <button type="button" role="tab" id="bp-top" aria-selected="false" data-plate="top">Top</button>
+        </div>
+      </div>
+      <div class="bp__sheet">
+        <div class="bp__draw" id="bp-draw"></div>
+        <div class="bp__tip" id="bp-tip" hidden></div>
+        <dl class="titleblock" id="bp-title"></dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- Build -->
+  <section class="section" id="build" aria-labelledby="build-h">
+    <header class="section__head">
+      <p class="eyebrow">Build kit · Turbo35</p>
+      <h2 id="build-h" class="display">Everything on the bench.</h2>
+      <p class="section__lede">Tick parts off as you gather them. Your list is saved in this browser.</p>
+    </header>
+    <div class="build">
+      <div class="kit">
+        <div class="kit__head">
+          <h3>Carbon and hardware</h3>
+          <span class="kit__count" id="kit-count">0 / 7 ready</span>
+        </div>
+        <div class="kit__bar" aria-hidden="true"><i id="kit-bar"></i></div>
+        <ul class="kit__list" id="kit-list"></ul>
+        <button type="button" class="linkbtn" id="kit-reset">Clear checklist</button>
+      </div>
+      <div class="prints">
+        <div class="kit__head">
+          <h3>3D-printed parts</h3>
+          <a class="linkbtn" href="https://www.printables.com/model/983603-turbo-35-fpv-frame-parts" target="_blank" rel="noopener">Printables ↗</a>
+        </div>
+        <ul class="prints__grid" id="prints"></ul>
+        <p class="note">Printed parts are licensed CC BY-NC 4.0. The Warren Davis O3 Air mounts are a third-party design; get them from the Printables page.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Download -->
+  <section class="section" id="download" aria-labelledby="dl-h">
+    <header class="section__head">
+      <p class="eyebrow">Download</p>
+      <h2 id="dl-h" class="display">Send it to the cutter.</h2>
+      <p class="section__lede">Four DXFs, in millimeters. Any carbon cutting shop can run them.</p>
+    </header>
+    <ul class="dl" id="dl"></ul>
+    <div class="license">
+      <div>
+        <h3>CC BY-SA 4.0</h3>
+        <p>Build it, modify it, share it, even sell cut sets. Credit the original Turbo frames with a link to the repo, and release any remix under the same license.</p>
+      </div>
+      <a class="btn btn--ghost" href="https://github.com/MOE-MK/turbo-frames/blob/main/LICENSE" target="_blank" rel="noopener">Read the license</a>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <dl class="titleblock titleblock--foot">
+    <div><dt>Title</dt><dd>Turbo FPV frames</dd></div>
+    <div><dt>Material</dt><dd>T700 carbon</dd></div>
+    <div><dt>Units</dt><dd>mm</dd></div>
+    <div><dt>License</dt><dd>CC BY-SA 4.0</dd></div>
+    <div><dt>Designer</dt><dd><a href="https://github.com/MOE-MK" target="_blank" rel="noopener">MOE-MK</a></dd></div>
+    <div><dt>Sheet</dt><dd>1 / 1</dd></div>
+  </dl>
+  <p class="foot__note">Provided as-is, with no warranty. Check your build before you fly and follow your local drone laws.</p>
+</footer>
+
+<script src="vendor/gsap.min.js"></script>
+<script src="vendor/ScrollTrigger.min.js"></script>
+<script src="vendor/lenis.min.js"></script>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
