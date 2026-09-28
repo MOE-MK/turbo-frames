@@ -30,6 +30,9 @@
 | 1 | 2 mm top plate (T700), [`dxf/Turbo20_Top.dxf`](dxf/Turbo20_Top.dxf) |
 | — | M2 standoffs and hardware (list coming soon) |
 
+**Recommended electronics:** 12xx–14xx motors at 4000–6000 KV on 4S HV 400–850 mAh.
+**Designer's build:** 1303.5 5500 KV motors on a 4S 450 mAh HV pack.
+
 **Hole reference (bottom plate)**
 - Motor mounts: 9×9 (M2)
 - Stack: 25.5×25.5 rotated 45° (M2), for the 25×25 AIO with the VTX stacked on top

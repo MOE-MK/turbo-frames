@@ -18,7 +18,7 @@ Download the DXFs, send them to any carbon cutting shop, and build.
 
 ## Turbo35 — 3.5"
 
-The Turbo35 is a 3.5" frame designed for maximum durability, with clean footage and no props in view.
+The Turbo35 is made to be the ultimate bando basher and concrete-jungle crusher. It's designed for maximum durability, with clean footage and no props in view. It can be built under 250 g, but that's not what it's for.
 
 ### Built for durability
 
@@ -59,6 +59,9 @@ The Turbo20 is the same durability-first design at 2". It's built around a singl
 | Props | 2" |
 | Electronics | 25×25 AIO, with a 25×25 VTX stacked on top |
 | Motor mount | 9×9 (M2) |
+| Motors | 12xx–14xx, 4000–6000 KV |
+| Battery | 4S HV 400–850 mAh |
+| Designer's build | 1303.5 5500 KV motors, 4S 450 mAh HV |
 | Wheelbase | ~94 mm (motor to motor, diagonal) |
 | Bottom plate | 3 mm T700 carbon |
 | Top plate | 2 mm T700 carbon |

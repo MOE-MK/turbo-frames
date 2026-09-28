@@ -36,6 +36,7 @@ const SETS = {
 /* Chapters: target state for the 3D scene                            */
 /* ------------------------------------------------------------------ */
 const CH = {
+  intro:     { model: 0, duo: 1, explode: 0, slide: 0,   posts: 1, props: 1, cam: [0.25, 1.75, 4.7], tgt: [0.25, -0.1, 0],  view: 'LINEUP / 35 + 20', pins: ['lbl35', 'lbl20'] },
   hero:      { model: 0, explode: 1,    slide: 0,   posts: 1, props: 0, cam: [2.55, 1.95, 2.95], tgt: [-0.08, 0.05, 0],   view: 'VIEW 01 / ISO' },
   durable:   { model: 0, explode: 3.4,  slide: 0,   posts: 0, props: 0, cam: [2.2, 1.25, 2.0], tgt: [0.15, 0.02, 0.05], view: 'VIEW 02 / STRUCTURE', rings: 'curves', pins: ['thickB', 'pCurve'] },
   stack:     { model: 0, explode: 0.2,  slide: 118, posts: 0, props: 0, cam: [0.5, 3.45, 0.42], tgt: [0.5, 0, 0.02],   view: 'VIEW 03 / TOP',  rings: 'stack', pins: ['p20', 'p30', 'p25', 'pRear'] },
@@ -45,6 +46,8 @@ const CH = {
   t20:       { model: 1, explode: 0.15, slide: 0,   posts: 1, props: 1, cam: [1.8, 1.35, 2.05], tgt: [0, 0.05, 0],     view: 'VIEW 06 / ISO',  rings: 't20', pins: ['p20stack', 'p20motor'] },
 };
 const PINS = {
+  lbl35:   { f: 't35', plate: 'top', x: 0, y: 68, text: 'TURBO35 · 3.5″' },
+  lbl20:   { f: 't20', plate: 'top', x: 0, y: 46, text: 'TURBO20 · 2″' },
   thickB:  { f: 't35', plate: 'bottom', x: 63.57, y: 58, text: '5.0 mm T700 unibody' },
   pCurve:  { f: 't35', plate: 'bottom', x: 30.61, y: -10.1, text: '159 curves · 0 sharp corners' },
   p20:     { f: 't35', plate: 'bottom', x: 10, y: 10, text: '20×20', set: 's20' },
@@ -207,9 +210,12 @@ function init3D() {
   }
 
   /* State */
-  const S = { model: 0, explode: 1, slide: 0, posts: 1, props: 0, yaw: 0, cam: new THREE.Vector3(...CH.hero.cam), tgt: new THREE.Vector3(...CH.hero.tgt) };
-  let T = { ...CH.hero };
-  let chapter = 'hero', chapterP = 0.5, stackSel = 'all';
+  const S = { model: 0, duo: 1, explode: 0, slide: 0, posts: 1, props: 1, yaw: 0, cam: new THREE.Vector3(...CH.intro.cam), tgt: new THREE.Vector3(...CH.intro.tgt) };
+  let T = { ...CH.intro };
+  const DUO = { t35: { x: -0.58, z: 0, mx: -0.2, mz: -0.35 }, t20: { x: 1.08, z: 0.1, mx: 0.42, mz: 0.62 } };
+  const spin = { t35: 0, t20: 0 }, foc = { t35: 0, t20: 0 };
+  let focus = null;
+  let chapter = 'intro', chapterP = 0.5, stackSel = 'all';
   let dragYaw = 0, dragYawT = 0;
   const ringOpacity = {};
 
@@ -218,7 +224,8 @@ function init3D() {
     chapter = name;
     T = CH[name];
     $('#hud-view').textContent = T.view;
-    $('#hud-model').textContent = T.model ? 'TURBO20' : 'TURBO35';
+    $('#hud-model').textContent = name === 'intro' ? 'TURBO35 + TURBO20' : T.model ? 'TURBO20' : 'TURBO35';
+    document.body.classList.toggle('is-intro', name === 'intro');
     pinEls.forEach((el, k) => el.classList.toggle('is-on', (T.pins || []).includes(k) && pinVisibleForStack(k)));
     if (reduced) snap();
   }
@@ -263,6 +270,14 @@ function init3D() {
     setChapter(chapter);
   }));
 
+  /* Lineup cards bring their frame forward */
+  document.querySelectorAll('[data-focus]').forEach((el) => {
+    const on = () => { focus = el.dataset.focus; };
+    const off = () => { focus = null; };
+    el.addEventListener('pointerenter', on); el.addEventListener('pointerleave', off);
+    el.addEventListener('focus', on); el.addEventListener('blur', off);
+  });
+
   /* Drag to rotate */
   let dragging = false, lastX = 0;
   canvas.addEventListener('pointerdown', (e) => { dragging = true; lastX = e.clientX; canvas.setPointerCapture(e.pointerId); });
@@ -274,7 +289,7 @@ function init3D() {
   addEventListener('pointermove', (e) => { mx = e.clientX / innerWidth - 0.5; my = e.clientY / innerHeight - 0.5; }, { passive: true });
 
   /* Resize + view offset: model sits right of the text column on wide screens */
-  let W = 1, H = 1, mobile = false, off = 0.25;
+  let W = 1, H = 1, mobile = false, offX = 0, offY = 0;
   function resize() {
     const r = canvas.getBoundingClientRect();
     W = Math.max(1, r.width); H = Math.max(1, r.height);
@@ -288,12 +303,11 @@ function init3D() {
   resize();
 
   function applyOffset() {
-    if (mobile) camera.setViewOffset(W, H, 0, H * 0.24, W, H);
-    else camera.setViewOffset(W, H, -W * off, 0, W, H);
+    camera.setViewOffset(W, H, -W * offX, H * offY, W, H);
     camera.updateProjectionMatrix();
   }
   function snap() {
-    Object.assign(S, { model: T.model, explode: T.explode, slide: T.slide, posts: T.posts, props: T.props });
+    Object.assign(S, { model: T.model, duo: T.duo ?? 0, explode: T.explode, slide: T.slide, posts: T.posts, props: T.props });
     S.cam.set(...T.cam); S.tgt.set(...T.tgt);
   }
 
@@ -311,7 +325,7 @@ function init3D() {
     if (!visible) return;
     const k = reduced ? 1 : 1 - Math.exp(-dt * 3.2);
     const kf = reduced ? 1 : 1 - Math.exp(-dt * 5);
-    for (const p of ['model', 'explode', 'slide', 'posts', 'props']) S[p] += (T[p] - S[p]) * k;
+    for (const p of ['model', 'duo', 'explode', 'slide', 'posts', 'props']) S[p] += ((T[p] ?? 0) - S[p]) * k;
 
     // camera with a slow orbit tied to scroll progress inside the chapter
     camT.set(...T.cam);
@@ -323,8 +337,10 @@ function init3D() {
     tgtT.set(...T.tgt);
     if (mobile) camT.multiplyScalar(1.55);
     S.cam.lerp(camT, k); S.tgt.lerp(tgtT, k);
-    const offT = chapter === 'hero' || chapter === 't20' ? 0.25 : 0.14;
-    if (Math.abs(offT - off) > 0.0005) { off += (offT - off) * k; applyOffset(); }
+    const intro = chapter === 'intro';
+    const oxT = mobile ? 0 : intro ? 0 : chapter === 'hero' || chapter === 't20' ? 0.25 : 0.14;
+    const oyT = mobile ? (intro ? 0.06 : 0.24) : 0;
+    if (Math.abs(oxT - offX) + Math.abs(oyT - offY) > 0.0005) { offX += (oxT - offX) * k; offY += (oyT - offY) * k; applyOffset(); }
     camera.position.copy(S.cam);
     camera.lookAt(S.tgt);
 
@@ -333,11 +349,17 @@ function init3D() {
 
     for (const [id, m] of Object.entries(models)) {
       const on = id === 't35' ? 1 - S.model : S.model;
-      const s = easeInOut(Math.min(1, Math.max(0, on)));
+      const s = easeInOut(Math.min(1, Math.max(0, Math.max(on, S.duo))));
+      foc[id] += ((focus === id ? 1 : focus ? -0.4 : 0) - foc[id]) * kf;
+      if (!reduced) spin[id] += dt * 0.32 * S.duo * (id === 't35' ? 1 : -1);
+      if (S.duo < 0.05) spin[id] += (Math.round(spin[id] / (Math.PI * 2)) * Math.PI * 2 - spin[id]) * k;
+      const d = DUO[id];
       m.g.visible = s > 0.002;
-      m.g.scale.setScalar(0.01 * (0.6 + 0.4 * s));
-      m.g.rotation.y = dragYaw + sway + (1 - s) * (id === 't35' ? -1.2 : 1.2);
-      m.g.position.x = (1 - s) * (id === 't35' ? -1.4 : 1.4);
+      m.g.scale.setScalar(0.01 * (0.6 + 0.4 * s) * (1 + 0.16 * foc[id] * S.duo));
+      m.g.rotation.y = dragYaw + sway + spin[id] + (1 - s) * (id === 't35' ? -1.2 : 1.2);
+      m.g.position.x = S.duo * (mobile ? d.mx : d.x) + (1 - s) * (id === 't35' ? -1.4 : 1.4);
+      m.g.position.z = S.duo * (mobile ? d.mz : d.z);
+      m.g.position.y = -0.155 + 0.09 * Math.max(0, foc[id]) * S.duo;
       const f = m.f;
       const e = S.explode;
       m.top.position.set(S.slide, f.tB + f.standoff + f.tT + e * 40, 0);
@@ -377,7 +399,7 @@ function init3D() {
     if (name !== chapter) setChapter(name);
     chapterP = p;
   });
-  setChapter('hero');
+  setChapter('intro');
   snap();
 }
 
