@@ -37,7 +37,7 @@ const SETS = {
 /* ------------------------------------------------------------------ */
 const CH = {
   hero:      { model: 0, explode: 1,    slide: 0,   posts: 1, props: 0, cam: [2.55, 1.95, 2.95], tgt: [-0.08, 0.05, 0],   view: 'VIEW 01 / ISO' },
-  unibody:   { model: 0, explode: 0.9,  slide: 0,   posts: 1, props: 0, cam: [3.0, 0.55, 1.45], tgt: [0.3, 0.1, 0],   view: 'VIEW 02 / SIDE', pins: ['thickB', 'thickT'] },
+  durable:   { model: 0, explode: 3.4,  slide: 0,   posts: 0, props: 0, cam: [2.2, 1.25, 2.0], tgt: [0.15, 0.02, 0.05], view: 'VIEW 02 / STRUCTURE', rings: 'curves', pins: ['thickB', 'pCurve'] },
   stack:     { model: 0, explode: 0.2,  slide: 118, posts: 0, props: 0, cam: [0.5, 3.45, 0.42], tgt: [0.5, 0, 0.02],   view: 'VIEW 03 / TOP',  rings: 'stack', pins: ['p20', 'p30', 'p25', 'pRear'] },
   motors:    { model: 0, explode: 0.3,  slide: 0,   posts: 1, props: 0, cam: [1.6, 1.2, 1.5], tgt: [0.45, 0.02, 0.33], view: 'DETAIL A / MOTOR', rings: 'motor', pins: ['pMotor'] },
   antenna:   { model: 0, explode: 0,    slide: 0,   posts: 1, props: 0, cam: [0.95, 1.15, -2.1], tgt: [0, 0.2, -0.5], view: 'VIEW 04 / REAR', pins: ['pAnt'] },
@@ -45,8 +45,8 @@ const CH = {
   t20:       { model: 1, explode: 0.15, slide: 0,   posts: 1, props: 1, cam: [1.8, 1.35, 2.05], tgt: [0, 0.05, 0],     view: 'VIEW 06 / ISO',  rings: 't20', pins: ['p20stack', 'p20motor'] },
 };
 const PINS = {
-  thickB:  { f: 't35', plate: 'bottom', x: 63.57, y: 58, text: '5.0 mm unibody' },
-  thickT:  { f: 't35', plate: 'top', x: -15, y: 0, text: '3.0 mm top' },
+  thickB:  { f: 't35', plate: 'bottom', x: 63.57, y: 58, text: '5.0 mm T700 unibody' },
+  pCurve:  { f: 't35', plate: 'bottom', x: 30.61, y: -10.1, text: '159 curves · 0 sharp corners' },
   p20:     { f: 't35', plate: 'bottom', x: 10, y: 10, text: '20×20', set: 's20' },
   p30:     { f: 't35', plate: 'bottom', x: 15.25, y: -15.25, text: '30.5×30.5 · M3', set: 's30' },
   p25:     { f: 't35', plate: 'bottom', x: -18.03, y: 0, text: '25.5×25.5 · 45°', set: 's25', left: true },
@@ -173,6 +173,17 @@ function init3D() {
       addRing(id + 'm9', mx, my, 4.5, 0.26, f.tB + 0.5);
       if (id === 't35') addRing(id + 'm12', mx, my, 6, 0.26, f.tB + 0.5);
     }
+    if (f.bottom.arcs) {
+      const key = id === 't35' ? 'curves' : 'curves20';
+      const grp = (rings[key] = new THREE.Group());
+      for (const a of f.bottom.arcs) {
+        if (a.length < 2) continue;
+        const curve = new THREE.CatmullRomCurve3(a.map(([x, y]) => new THREE.Vector3(x, f.tB + 0.45, y)));
+        const tube = new THREE.Mesh(new THREE.TubeGeometry(curve, Math.max(2, a.length), 0.42, 5, false), ringMat(key));
+        tube.renderOrder = 4;
+        grp.add(tube);
+      }
+    }
     Object.values(rings).forEach((r) => g.add(r));
     // prop ghosts
     const props = new THREE.Group();
@@ -222,6 +233,7 @@ function init3D() {
       return stackSel === 'all' || stackSel === key ? 1 : 0.0;
     }
     if (rs === 'motor') return key.startsWith('t35m') ? 1 : 0;
+    if (rs === 'curves') return key === 'curves' ? 1 : 0;
     if (rs === 't20') return key === 't20' || key === 't20m9' ? 1 : 0;
     return 0;
   }

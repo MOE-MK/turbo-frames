@@ -1,8 +1,15 @@
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/img/mk-logo-white.svg">
+    <img src="docs/img/mk-logo-black.svg" width="96" alt="MK logo">
+  </picture>
+</p>
+
 # Turbo FPV Frames
 
 **🌐 [Explore the frames in 3D →](https://moe-mk.github.io/turbo-frames/)**
 
-Two open-source carbon fiber FPV frames: the **Turbo35** (3.5") and the **Turbo20** (2").
+Two open-source carbon fiber FPV frames by MK: the **Turbo35** (3.5") and the **Turbo20** (2"). Built for durability and designed around the DJI O4 Pro.
 Download the DXFs, send them to any carbon cutting shop, and build.
 
 ![Turbo35 and Turbo20 bottom plates](renders/hero.png)
@@ -11,14 +18,21 @@ Download the DXFs, send them to any carbon cutting shop, and build.
 
 ## Turbo35 — 3.5"
 
-The Turbo35 is a 3.5" frame built for versatility, durability, and clean footage with no props in view.
+The Turbo35 is a 3.5" frame designed for maximum durability, with clean footage and no props in view.
+
+### Built for durability
+
+- **5 mm T700 unibody.** On a 5" frame a unibody can be a drawback. At 3.5" it's the point: one continuous plate, with no arm joints and no separate arms to snap.
+- **Rounded everywhere.** The bottom plate is made of 159 curves with no sharp corners (tightest radius 1.0 mm), so there are no built-in weak points.
+- **Checked in simulation** for weaker spots, and **tested by the community.**
+- **M2 standoffs by design,** so they absorb hits instead of the carbon.
+
+### Features
 
 - **Flexible electronics mounting:** 20×20 or 30×30 stack, or a 25×25 AIO
-- **Room for the video transmitter,** including the DJI O3
+- **Designed for the DJI O4 Pro,** and works with almost anything, including the DJI O3, HDZero and analog
 - **Supports 12×12 and 9×9 motor patterns**
 - **Built-in whip antenna slot** at the back of the top plate holds the antenna without any 3D-printed parts (tested)
-- **Rounded design** with no sharp angles, to reduce the chance of breaking in hard landings and crashes
-- **Heavy 5 mm unibody bottom plate** paired with a 3 mm top plate
 
 | | |
 |---|---|
@@ -38,7 +52,7 @@ The Turbo35 is a 3.5" frame built for versatility, durability, and clean footage
 
 ## Turbo20 — 2"
 
-The Turbo20 is a compact 2" frame built around a single 25×25 AIO. Any 25×25 VTX stacks directly on top of the AIO, **including the DJI O4 and O4 Pro.**
+The Turbo20 is the same durability-first design at 2". It's built around a single 25×25 AIO, **designed for the DJI O4 Pro** stacked directly on top, and it takes any 25×25 VTX.
 
 | | |
 |---|---|
